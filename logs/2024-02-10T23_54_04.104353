@@ -1,0 +1,82 @@
+02/10/2024 23:54:04 - INFO - __main__ - Namespace(use_demonstrations=True, use_soft_prefix=False, use_soft_postfix=False, n_prefix_tokens=10, max_length=1024, prior=['easiest'], difficulty='concept_calibrated', reorder=False, log_dir='logs', out_dir='out/gpt2', load_dir=None, concept_dir='concept_likelihood/gpt2/code_dataset-train-100/humaneval,mbbp-direct-prefix=10-lr=1e-2-1000', prefix_embed_file='checkpoints/gpt2/code_dataset-train/prefix={10}-{direct}-lr={1e-2}-initByVocab/soft_embeddings-1000.pt', task=None, dataset='humaneval,mbbp', data_dir='data/', k=4, seed='100', test_batch_size=4, global_step=None, use_random_english_words=False, use_random_label=False, split='test', method='direct', gpt='gpt2', api=None, test_size=1000, train_size=100, embedding_dir='embeddings/', embedding_model='all-mpnet-base-v2', similarity_temperature=0.1, concept_temperature=50.0, use_instruction=False)
+02/10/2024 23:54:04 - INFO - __main__ - Setting up for local_rank=-1, world_size=1
+02/10/2024 23:54:06 - INFO - __main__ - batch_size=4	max_length=1024	max_length_per_example=1024
+02/10/2024 23:54:07 - INFO - __main__ - [Dev] humaneval	164
+02/10/2024 23:54:07 - INFO - __main__ - [Dev] mbbp	257
+02/10/2024 23:54:07 - INFO - __main__ - direct on None ( 2 dev)
+02/10/2024 23:54:10 - INFO - numexpr.utils - NumExpr defaulting to 2 threads.
+02/10/2024 23:54:11 - INFO - __main__ - Checking the first example...
+Input:
+Note:
+The length of operator list is equal to the length of operand list minus one.
+Operand is a list of of non-negative integers.
+Operator list has at least one operator, and operand list has at least two operands.     expression = str(operand[0])
+    for oprt, oprn in zip(operator, operand[1:]):
+        expression+= oprt + str(oprn)
+    return eval(expression)
+ Write a Python function `words_string(s)` to solve the following problem:
+You will be given a string of words separated by commas or spaces. Your task is
+to split the string into words and return an array of the words.
+For example:
+words_string("Hi, my name is John") == ["Hi", "my", "name", "is", "John"]
+words_string("One, two, three, four, five, six") == ["One", "two", "three", "four", "five", "six"]     if not s:
+        return []
+
+    s_list = []
+
+    for letter in s:
+        if letter == ',':
+            s_list.append(' ')
+        else:
+            s_list.append(letter)
+
+    s_list = "".join(s_list)
+    return s_list.split()
+ Write a Python function `sum_squares(lst)` to solve the following problem:
+You are given a list of numbers.
+You need to return the sum of squared numbers in the given list,
+round each element in the list to the upper int(Ceiling) first.
+Examples:
+For lst = [1,2,3] the output should be 14
+For lst = [1,4,9] the output should be 98
+For lst = [1,3,5,7] the output should be 84
+For lst = [1.4,4.2,0] the output should be 29
+For lst = [-2.4,1,1] the output should be 6     import math
+    squared = 0
+    for i in lst:
+        squared += math.ceil(i)**2
+    return squared
+ Write a Python function `fizz_buzz(n: int)` to solve the following problem:
+Return the number of times the digit 7 appears in integers less than n which are divisible by 11 or 13.
+>>> fizz_buzz(50)
+0
+>>> fizz_buzz(78)
+2
+>>> fizz_buzz(79)
+3     ns = []
+    for i in range(n):
+        if i % 11 == 0 or i % 13 == 0:
+            ns.append(i)
+    s = ''.join(list(map(str, ns)))
+    ans = 0
+    for c in s:
+        ans += (c == '7')
+    return ans
+ Write a Python function `has_close_elements(numbers: List[float], threshold: float) -> bool` to solve the following problem:
+Check if in given list of numbers, are any two numbers closer to each other than
+given threshold.
+>>> has_close_elements([1.0, 2.0, 3.0], 0.5)
+False
+>>> has_close_elements([1.0, 2.8, 3.0, 4.0, 5.0, 2.0], 0.3)
+True
+Output:
+     for idx, elem in enumerate(numbers):
+        for idx2, elem2 in enumerate(numbers):
+            if idx!= idx2:
+                distance = abs(elem - elem2)
+                if distance < threshold:
+                    return True
+
+    return False
+
+02/10/2024 23:54:11 - INFO - __main__ - torch.Size([164, 1024])

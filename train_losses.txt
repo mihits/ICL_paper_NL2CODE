@@ -1,0 +1,261 @@
+        epoch:  0
+        02/02/2024 12:09:27 - INFO - __main__ - local rank -1   global step 1   train loss 2.45
+        02/02/2024 12:09:31 - INFO - __main__ - local rank -1   val loss 2.34
+        epoch:  1
+        epoch:  2
+        epoch:  3
+        02/02/2024 12:11:17 - INFO - __main__ - local rank -1   global step 100 train loss 2.30
+        02/02/2024 12:11:22 - INFO - __main__ - local rank -1   val loss 1.50
+        epoch:  4
+        epoch:  5
+        epoch:  6
+        02/02/2024 12:13:17 - INFO - __main__ - local rank -1   global step 200 train loss 2.05
+        02/02/2024 12:13:21 - INFO - __main__ - local rank -1   val loss 1.37
+        epoch:  7
+        epoch:  8
+        epoch:  9
+        02/02/2024 12:15:16 - INFO - __main__ - local rank -1   global step 300 train loss 1.95
+        02/02/2024 12:15:21 - INFO - __main__ - local rank -1   val loss 1.34
+        epoch:  10
+        epoch:  11
+        epoch:  12
+        02/02/2024 12:17:15 - INFO - __main__ - local rank -1   global step 400 train loss 1.88
+        02/02/2024 12:17:20 - INFO - __main__ - local rank -1   val loss 1.32
+        epoch:  13
+        epoch:  14
+        epoch:  15
+        02/02/2024 12:19:15 - INFO - __main__ - local rank -1   global step 500 train loss 1.84
+        02/02/2024 12:19:19 - INFO - __main__ - local rank -1   val loss 1.37
+        epoch:  16
+        epoch:  17
+        epoch:  18
+        02/02/2024 12:21:13 - INFO - __main__ - local rank -1   global step 600 train loss 1.81
+        02/02/2024 12:21:18 - INFO - __main__ - local rank -1   val loss 1.36
+        epoch:  19
+        epoch:  20
+        epoch:  21
+        02/02/2024 12:23:13 - INFO - __main__ - local rank -1   global step 700 train loss 1.78
+        02/02/2024 12:23:17 - INFO - __main__ - local rank -1   val loss 1.29
+        epoch:  22
+        epoch:  23
+        epoch:  24
+        02/02/2024 12:25:12 - INFO - __main__ - local rank -1   global step 800 train loss 1.76
+        02/02/2024 12:25:16 - INFO - __main__ - local rank -1   val loss 1.42
+        epoch:  25
+        epoch:  26
+        epoch:  27
+        02/02/2024 12:27:11 - INFO - __main__ - local rank -1   global step 900 train loss 1.75
+        02/02/2024 12:27:16 - INFO - __main__ - local rank -1   val loss 1.27
+        epoch:  28
+        epoch:  29
+epoch:  30
+02/02/2024 12:29:11 - INFO - __main__ - local rank -1	global step 1000	train loss 1.73
+02/02/2024 12:29:15 - INFO - __main__ - local rank -1	val loss 1.31
+epoch:  31
+epoch:  32
+epoch:  33
+02/02/2024 12:31:23 - INFO - __main__ - local rank -1	global step 1100	train loss 1.72
+02/02/2024 12:31:27 - INFO - __main__ - local rank -1	val loss 1.41
+epoch:  34
+epoch:  35
+epoch:  36
+02/02/2024 12:33:22 - INFO - __main__ - local rank -1	global step 1200	train loss 1.71
+02/02/2024 12:33:26 - INFO - __main__ - local rank -1	val loss 1.31
+epoch:  37
+epoch:  38
+epoch:  39
+02/02/2024 12:35:21 - INFO - __main__ - local rank -1	global step 1300	train loss 1.70
+02/02/2024 12:35:26 - INFO - __main__ - local rank -1	val loss 1.28
+epoch:  40
+epoch:  41
+epoch:  42
+02/02/2024 12:37:21 - INFO - __main__ - local rank -1	global step 1400	train loss 1.69
+02/02/2024 12:37:25 - INFO - __main__ - local rank -1	val loss 1.39
+epoch:  43
+epoch:  44
+epoch:  45
+02/02/2024 12:39:20 - INFO - __main__ - local rank -1	global step 1500	train loss 1.68
+02/02/2024 12:39:25 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  46
+epoch:  47
+epoch:  48
+02/02/2024 12:41:19 - INFO - __main__ - local rank -1	global step 1600	train loss 1.67
+02/02/2024 12:41:24 - INFO - __main__ - local rank -1	val loss 1.34
+epoch:  49
+epoch:  50
+epoch:  51
+02/02/2024 12:43:19 - INFO - __main__ - local rank -1	global step 1700	train loss 1.67
+02/02/2024 12:43:23 - INFO - __main__ - local rank -1	val loss 1.32
+epoch:  52
+epoch:  53
+epoch:  54
+02/02/2024 12:45:18 - INFO - __main__ - local rank -1	global step 1800	train loss 1.66
+02/02/2024 12:45:23 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  55
+epoch:  56
+epoch:  57
+02/02/2024 12:47:18 - INFO - __main__ - local rank -1	global step 1900	train loss 1.66
+02/02/2024 12:47:22 - INFO - __main__ - local rank -1	val loss 1.34
+epoch:  58
+epoch:  59
+epoch:  60
+02/02/2024 12:49:17 - INFO - __main__ - local rank -1	global step 2000	train loss 1.65
+02/02/2024 12:49:21 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  61
+epoch:  62
+epoch:  63
+02/02/2024 12:51:17 - INFO - __main__ - local rank -1	global step 2100	train loss 1.65
+02/02/2024 12:51:21 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  64
+epoch:  65
+epoch:  66
+02/02/2024 12:53:16 - INFO - __main__ - local rank -1	global step 2200	train loss 1.64
+02/02/2024 12:53:21 - INFO - __main__ - local rank -1	val loss 1.24
+epoch:  67
+epoch:  68
+epoch:  69
+02/02/2024 12:55:16 - INFO - __main__ - local rank -1	global step 2300	train loss 1.64
+02/02/2024 12:55:20 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  70
+epoch:  71
+epoch:  72
+02/02/2024 12:57:15 - INFO - __main__ - local rank -1	global step 2400	train loss 1.63
+02/02/2024 12:57:20 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  73
+epoch:  74
+epoch:  75
+02/02/2024 12:59:14 - INFO - __main__ - local rank -1	global step 2500	train loss 1.63
+02/02/2024 12:59:19 - INFO - __main__ - local rank -1	val loss 1.31
+epoch:  76
+epoch:  77
+epoch:  78
+02/02/2024 13:01:14 - INFO - __main__ - local rank -1	global step 2600	train loss 1.63
+02/02/2024 13:01:18 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  79
+epoch:  80
+epoch:  81
+02/02/2024 13:03:13 - INFO - __main__ - local rank -1	global step 2700	train loss 1.62
+02/02/2024 13:03:18 - INFO - __main__ - local rank -1	val loss 1.37
+epoch:  82
+epoch:  83
+epoch:  84
+02/02/2024 13:05:13 - INFO - __main__ - local rank -1	global step 2800	train loss 1.62
+02/02/2024 13:05:17 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  85
+epoch:  86
+epoch:  87
+02/02/2024 13:07:12 - INFO - __main__ - local rank -1	global step 2900	train loss 1.62
+02/02/2024 13:07:16 - INFO - __main__ - local rank -1	val loss 1.24
+epoch:  88
+epoch:  89
+epoch:  90
+02/02/2024 13:09:11 - INFO - __main__ - local rank -1	global step 3000	train loss 1.61
+02/02/2024 13:09:16 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  91
+epoch:  92
+epoch:  93
+02/02/2024 13:11:12 - INFO - __main__ - local rank -1	global step 3100	train loss 1.61
+02/02/2024 13:11:16 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  94
+epoch:  95
+epoch:  96
+02/02/2024 13:13:11 - INFO - __main__ - local rank -1	global step 3200	train loss 1.61
+02/02/2024 13:13:15 - INFO - __main__ - local rank -1	val loss 1.26
+epoch:  97
+epoch:  98
+epoch:  99
+02/02/2024 13:15:10 - INFO - __main__ - local rank -1	global step 3300	train loss 1.61
+02/02/2024 13:15:14 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  100
+epoch:  101
+epoch:  102
+epoch:  103
+02/02/2024 13:17:09 - INFO - __main__ - local rank -1	global step 3400	train loss 1.60
+02/02/2024 13:17:14 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  104
+epoch:  105
+epoch:  106
+02/02/2024 13:19:09 - INFO - __main__ - local rank -1	global step 3500	train loss 1.60
+02/02/2024 13:19:13 - INFO - __main__ - local rank -1	val loss 1.26
+epoch:  107
+epoch:  108
+epoch:  109
+02/02/2024 13:21:08 - INFO - __main__ - local rank -1	global step 3600	train loss 1.60
+02/02/2024 13:21:13 - INFO - __main__ - local rank -1	val loss 1.28
+epoch:  110
+epoch:  111
+epoch:  112
+02/02/2024 13:23:07 - INFO - __main__ - local rank -1	global step 3700	train loss 1.60
+02/02/2024 13:23:12 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  113
+epoch:  114
+epoch:  115
+02/02/2024 13:25:07 - INFO - __main__ - local rank -1	global step 3800	train loss 1.60
+02/02/2024 13:25:11 - INFO - __main__ - local rank -1	val loss 1.26
+epoch:  116
+epoch:  117
+epoch:  118
+02/02/2024 13:27:06 - INFO - __main__ - local rank -1	global step 3900	train loss 1.59
+02/02/2024 13:27:10 - INFO - __main__ - local rank -1	val loss 1.33
+epoch:  119
+epoch:  120
+epoch:  121
+02/02/2024 13:29:06 - INFO - __main__ - local rank -1	global step 4000	train loss 1.59
+02/02/2024 13:29:10 - INFO - __main__ - local rank -1	val loss 1.23
+epoch:  122
+epoch:  123
+epoch:  124
+02/02/2024 13:31:05 - INFO - __main__ - local rank -1	global step 4100	train loss 1.59
+02/02/2024 13:31:10 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  125
+epoch:  126
+epoch:  127
+02/02/2024 13:33:05 - INFO - __main__ - local rank -1	global step 4200	train loss 1.59
+02/02/2024 13:33:09 - INFO - __main__ - local rank -1	val loss 1.27
+epoch:  128
+epoch:  129
+epoch:  130
+02/02/2024 13:35:04 - INFO - __main__ - local rank -1	global step 4300	train loss 1.59
+02/02/2024 13:35:09 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  131
+epoch:  132
+epoch:  133
+02/02/2024 13:37:03 - INFO - __main__ - local rank -1	global step 4400	train loss 1.58
+02/02/2024 13:37:08 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  134
+epoch:  135
+epoch:  136
+02/02/2024 13:39:03 - INFO - __main__ - local rank -1	global step 4500	train loss 1.58
+02/02/2024 13:39:08 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  137
+epoch:  138
+epoch:  139
+02/02/2024 13:41:02 - INFO - __main__ - local rank -1	global step 4600	train loss 1.58
+02/02/2024 13:41:07 - INFO - __main__ - local rank -1	val loss 1.24
+epoch:  140
+epoch:  141
+epoch:  142
+02/02/2024 13:43:02 - INFO - __main__ - local rank -1	global step 4700	train loss 1.58
+02/02/2024 13:43:06 - INFO - __main__ - local rank -1	val loss 1.29
+epoch:  143
+epoch:  144
+epoch:  145
+02/02/2024 13:45:01 - INFO - __main__ - local rank -1	global step 4800	train loss 1.58
+02/02/2024 13:45:05 - INFO - __main__ - local rank -1	val loss 1.30
+epoch:  146
+epoch:  147
+epoch:  148
+02/02/2024 13:47:00 - INFO - __main__ - local rank -1	global step 4900	train loss 1.58
+02/02/2024 13:47:05 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  149
+epoch:  150
+epoch:  151
+02/02/2024 13:49:00 - INFO - __main__ - local rank -1	global step 5000	train loss 1.58
+02/02/2024 13:49:04 - INFO - __main__ - local rank -1	val loss 1.25
+epoch:  152
+epoch:  153
+epoch:  154
+02/02/2024 13:50:59 - INFO - __main__ - local rank -1	global step 5100	train loss 1.57
+02/02/2024 13:51:04 - INFO - __main__ - local rank -1	val loss 1.33
+epoch:  155
+epoch:  156

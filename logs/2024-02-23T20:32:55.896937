@@ -1,0 +1,6 @@
+02/23/2024 20:32:55 - INFO - __main__ - Namespace(api=None, concept_dir='concept_likelihood/gpt2/code_dataset-train-100/humaneval,mbbp-direct-prefix=10-lr=1e-2-1000', concept_temperature=50.0, data_dir='data/', dataset='humaneval,mbbp', difficulty='concept_calibrated', embedding_dir='embeddings/', embedding_model='all-mpnet-base-v2', global_step=None, gpt='gpt2', k=4, load_dir=None, log_dir='logs', max_length=1024, method='direct', n_prefix_tokens=10, out_dir='out/gpt2', prefix_embed_file='checkpoints/gpt2/code_dataset-train/prefix={10}-{direct}-lr={1e-2}-initByVocab/soft_embeddings-1000.pt', prior=['easiest'], reorder=False, seed='100', similarity_temperature=0.1, split='test', task=None, test_batch_size=4, test_size=1000, train_size=100, use_demonstrations=True, use_instruction=False, use_random_english_words=False, use_random_label=False, use_soft_postfix=False, use_soft_prefix=False)
+02/23/2024 20:32:55 - INFO - __main__ - Setting up for local_rank=-1, world_size=1
+02/23/2024 20:32:59 - INFO - __main__ - batch_size=4	max_length=1024	max_length_per_example=1024
+02/23/2024 20:33:09 - INFO - __main__ - [Dev] humaneval	164
+02/23/2024 20:33:09 - INFO - __main__ - [Dev] mbbp	257
+02/23/2024 20:33:09 - INFO - __main__ - direct on None ( 2 dev)

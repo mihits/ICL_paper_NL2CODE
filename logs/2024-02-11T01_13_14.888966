@@ -1,0 +1,5 @@
+02/11/2024 01:13:14 - INFO - __main__ - Namespace(batch_size=4, data_dir='data/', dataset=None, do_sanity_check=False, do_tensorize=True, fp16=False, gpt2='gpt2', k=16384, local_rank=-1, log_dir='logs', log_period=2, lr=0.01, method='direct', n_gpu=1, n_prefix_tokens=10, n_process=10, no_masking=False, num_training_steps=5, optimization='adamw', out_dir='checkpoints/gpt2/code_dataset-train/prefix={10}-{direct}-lr={1e-2}-initByVocab', prefix_embed_file=None, save_period=1000, seed=100, split='train', task='code_dataset', tensorize_dir='tensorized', test_k=4, train_seed=1, use_demonstrations=False, use_random_english_words=False, warmup_steps=0, weight_decay=0.0)
+02/11/2024 01:13:14 - INFO - __main__ - batch_size=4	max_length=1024	max_length_per_example=1024
+02/11/2024 01:13:14 - INFO - __main__ - [Train] humaneval	164
+02/11/2024 01:13:14 - INFO - __main__ - [Train] mbbp	120
+02/11/2024 01:13:14 - INFO - __main__ - direct on None (2 train)
