@@ -418,51 +418,51 @@ class MetaICLData(object):
 
     
 
-    # def print_tensorized_example(self, return_string=False):
-    #     assert self.tensorized_inputs is not None
-
-    #     idx = 0
-    #     text = "Checking the first example..."
-    #     input_ids = self.tensorized_inputs["input_ids"][idx]
-    #     token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
-    #     if type(input_ids)!=list:
-    #         input_ids = input_ids.numpy().tolist()
-    #     if type(token_type_ids)!=list:
-    #         token_type_ids = token_type_ids.numpy().tolist()
-
-    #     text += "\nInput:\n"
-    #     text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
-    #     text += "\nOutput:\n"
-    #     text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
-
-    #     if return_string:
-    #         return text
-
-    #     if self.local_rank<=0:
-    #       self.logger.info(text)
-
     def print_tensorized_example(self, return_string=False):
         assert self.tensorized_inputs is not None
 
-        for idx in range(10000):
-            text = ""
-            ###text = "Checking the first example..."
-            input_ids = self.tensorized_inputs["input_ids"][idx]
-            token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
-            if type(input_ids)!=list:
-                input_ids = input_ids.numpy().tolist()
-            if type(token_type_ids)!=list:
-                token_type_ids = token_type_ids.numpy().tolist()
+        idx = 0
+        text = "Checking the first example..."
+        input_ids = self.tensorized_inputs["input_ids"][idx]
+        token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
+        if type(input_ids)!=list:
+            input_ids = input_ids.numpy().tolist()
+        if type(token_type_ids)!=list:
+            token_type_ids = token_type_ids.numpy().tolist()
 
-            text += "\nInput:\n"
-            text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
-            text += "\nOutput:\n"
-            text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
+        text += "\nInput:\n"
+        text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
+        text += "\nOutput:\n"
+        text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
 
-            with open('examples_step3_nl.txt', 'a') as file:
-                # Write data to the file
-                file.write(text)
-                file.write("\n\n")
+        if return_string:
+            return text
+
+        if self.local_rank<=0:
+          self.logger.info(text)
+
+    # def print_tensorized_example(self, return_string=False):
+    #     assert self.tensorized_inputs is not None
+
+    #     for idx in range(10000):
+    #         text = ""
+    #         ###text = "Checking the first example..."
+    #         input_ids = self.tensorized_inputs["input_ids"][idx]
+    #         token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
+    #         if type(input_ids)!=list:
+    #             input_ids = input_ids.numpy().tolist()
+    #         if type(token_type_ids)!=list:
+    #             token_type_ids = token_type_ids.numpy().tolist()
+
+    #         text += "\nInput:\n"
+    #         text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
+    #         text += "\nOutput:\n"
+    #         text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
+
+    #         with open('examples_step3_nl.txt', 'a') as file:
+    #             # Write data to the file
+    #             file.write(text)
+    #             file.write("\n\n")
 
 def prepro_sentence_pair_single(ids1, ids2, max_length, n_prefix_tokens=0,
     prefix_token_ids=None, prefix=True, allow_truncation=True, task=None):

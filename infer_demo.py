@@ -292,33 +292,34 @@ def main(logger, args):
             if "hardest" in args.prior or "easiest" in args.prior:
                 if "balanced" in args.prior and is_classification:
                     pass
-                '''
-                    all_labels = np.array([d["output"] for d in curr_train_data])
-                    all_ids = np.arange(len(curr_train_data))
-                    _k = math.ceil(args.k/len(options))
-                    top_ids = []
-                    top_diff = []
-                    for c in options:
-                        curr_ids = all_ids[all_labels == c]
-                        sorted_ids = curr_ids[np.argsort(difficulties[all_labels == c])]
+                    '''
+                        all_labels = np.array([d["output"] for d in curr_train_data])
+                        all_ids = np.arange(len(curr_train_data))
+                        _k = math.ceil(args.k/len(options))
+                        top_ids = []
+                        top_diff = []
+                        for c in options:
+                            curr_ids = all_ids[all_labels == c]
+                            sorted_ids = curr_ids[np.argsort(difficulties[all_labels == c])]
+                            if "hardest" in args.prior:
+                                top_ids += list(sorted_ids[-_k:])
+                                top_diff += list(sorted_diff[-_k:])
+                            else:
+                                top_ids += list(sorted_ids[:_k])
+                                top_diff += list(sorted_diff[:_k])
+                        top_ids = np.array(top_ids)
                         if "hardest" in args.prior:
-                            top_ids += list(sorted_ids[-_k:])
-                            top_diff += list(sorted_diff[-_k:])
+                            demo_ids = top_ids[np.argsort(top_diff)[-args.k:]]
                         else:
-                            top_ids += list(sorted_ids[:_k])
-                            top_diff += list(sorted_diff[:_k])
-                    top_ids = np.array(top_ids)
-                    if "hardest" in args.prior:
-                        demo_ids = top_ids[np.argsort(top_diff)[-args.k:]]
-                    else:
-                        demo_ids = top_ids[np.argsort(top_diff)[:args.k]]
+                            demo_ids = top_ids[np.argsort(top_diff)[:args.k]]
+                    '''
                 else:
                     sorted_ids = np.argsort(difficulties)
                     if "hardest" in args.prior:
                         demo_ids = sorted_ids[-args.k:]
                     else:
                         demo_ids = sorted_ids[:args.k]
-                '''
+                
                 
                 if args.reorder:
                     demo_ids_perm = permutation(list(demo_ids))

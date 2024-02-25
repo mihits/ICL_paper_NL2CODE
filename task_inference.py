@@ -83,7 +83,9 @@ def main(logger, args):
             args.use_demonstrations, args.use_instruction, args.k,
             max_length, max_length_per_example, add_newlines=add_newlines)
     
-
+    metaicl_data.tokenizer.padding_side = "left" 
+    if metaicl_data.tokenizer.pad_token == None:
+        metaicl_data.tokenizer.pad_token = metaicl_data.tokenizer.eos_token
 
     all_f1s = []
     all_accs = []
@@ -162,7 +164,7 @@ def main(logger, args):
             #     (args.task, seed, 100*f1, 100*acc))
             # all_f1s.append(f1)
             # all_accs.append(acc)
-        output_file_path = r"/content/drive/MyDrive/ICLPaper_NL2Code_v3/predictions.json"
+        output_file_path = "predictions_" + args.gpt.split('/')[-1] + "_" + str(args.test_batch_size) + ".json"
         with open(output_file_path, 'w') as json_file:
             json.dump(predictions_dict, json_file, indent=2)
         
@@ -202,7 +204,7 @@ def run(task, metaicl_data, metaicl_model, train_data, dev_data,
         metaicl_data.tensorize(train_data, dev_data)
         metaicl_data.print_tensorized_example()
 
-        exit(1)
+    
         preds = metaicl_model.perform_inference(metaicl_data, args.test_batch_size)
 
         return preds

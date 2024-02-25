@@ -28,7 +28,7 @@ CUDA_VISIBLE_DEVICES=0 python task_inference.py\
     --prefix_embed_file checkpoints/gpt2/$TRAIN_TASK-$SPLIT/prefix={$N_PREFIX}-{$TRAIN_METHOD}-lr={$LR}-initByVocab/soft_embeddings-$STEP.pt\
     --prior easiest\
     --seed 100\
-    --max_length 1024\  ##size of model context window
+    --max_length 1800\  ##size of model context window - max_new_tokens generated
        # --reorder\
     # --prior most_similar\
 

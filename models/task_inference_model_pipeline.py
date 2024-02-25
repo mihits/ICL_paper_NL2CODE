@@ -117,9 +117,9 @@ class MetaICLModel(object):
             
             
             with torch.no_grad():
-                outputs = self.model.generate(input_ids=input_ids, attention_mask=attention_mask,max_new_tokens = 50)
+                outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200)
                 
-                print(outputs.shape)
+                #print(outputs.shape)
                 #print("\n",len(outputs))
                 #print(type(outputs))
 
@@ -130,6 +130,8 @@ class MetaICLModel(object):
                     dp["output"] = decoded_outputs
                     dp["input"] = decoded_inputs
                     preds.append(dp)
+                
+                break
 
         return preds ###list of dicts , each having i/p & o/p
 
