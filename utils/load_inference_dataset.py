@@ -389,7 +389,8 @@ class MetaICLData(object):
 
                 inputs = demonstrations[dp_idx] + inputs
 
-                encoded = prepro_sentence_pair_single(
+                pad_tk = self.tokenizer.encode(self.tokenizer.pad_token)[0]
+                encoded = prepro_sentence_pair_single(pad_tk,
                     inputs, outputs, self.max_length, self.n_prefix_tokens, 
                     self.prefix_token_ids, self.prefix, self.use_demonstrations,
                     task if self.task_counts is not None else None)  ### prefix = false
@@ -462,7 +463,7 @@ class MetaICLData(object):
     #             file.write(text)
     #             file.write("\n\n")
 
-def prepro_sentence_pair_single(ids1, ids2, max_length, n_prefix_tokens=0,
+def prepro_sentence_pair_single(pad_tk,ids1, ids2, max_length, n_prefix_tokens=0,
     prefix_token_ids=None, prefix=True, allow_truncation=True, task=None):  ###prefix = false, n_prefix_tokens =0
 
     #if bos_token_id is not None:
@@ -494,20 +495,23 @@ def prepro_sentence_pair_single(ids1, ids2, max_length, n_prefix_tokens=0,
     #         ids1 += ids2
     #         ids2 = _prefix_token_ids
 
-    right_pad = True
+    right_pad = False
     no_pad = False
+
+    
+
     if right_pad:
         n_mask = max_length-len(ids1)-len(ids2)
         assert n_mask>=0, (max_length, len(ids1), len(ids2))
         input_ids = ids1+ids2+[0 for _ in range(n_mask)]
         attention_mask = [1 for _ in ids1+ids2] + [0 for _ in range(n_mask)]
         token_type_ids = [0 for _ in ids1] + [1 for _ in ids2] + [0 for _ in range(n_mask)]
-    # else:
-    #     n_mask = max_length-len(ids1)-len(ids2)
-    #     assert n_mask>=0, (max_length, len(ids1), len(ids2))
-    #     input_ids = [0 for _ in range(n_mask)]+ids1+ids2
-    #     attention_mask = [0 for _ in range(n_mask)] + [1 for _ in ids1+ids2] 
-    #     token_type_ids = [0 for _ in range(n_mask)] + [0 for _ in ids1] + [1 for _ in ids2] 
+    else:
+        n_mask = max_length-len(ids1)-len(ids2)
+        assert n_mask>=0, (max_length, len(ids1), len(ids2))
+        input_ids = [pad_tk for _ in range(n_mask)]+ids1+ids2
+        attention_mask = [0 for _ in range(n_mask)] + [1 for _ in ids1+ids2] 
+        token_type_ids = [0 for _ in range(n_mask)] + [0 for _ in ids1] + [1 for _ in ids2] 
     
     if no_pad:
         input_ids = ids1+ids2

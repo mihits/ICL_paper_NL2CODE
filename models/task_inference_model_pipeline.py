@@ -89,7 +89,7 @@ class MetaICLModel(object):
     def load(self, gpt2="gpt2-large"):
 
       
-        model = AutoModelForCausalLM.from_pretrained(gpt2)
+        model = AutoModelForCausalLM.from_pretrained(gpt2,trust_remote_code=True)
         self.model_name = gpt2
 
         if torch.__version__ == '1.14.0.dev20221208+cu117':
@@ -121,7 +121,7 @@ class MetaICLModel(object):
             
             
             with torch.no_grad():
-                outputs = self.model.generate(input_ids=input_ids[:,:token_type_ids.index(1)], pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200)
+                outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200)
                 
                 #print(outputs.shape)
                 #print("\n",len(outputs))
@@ -129,7 +129,7 @@ class MetaICLModel(object):
 
                 for i in range(len(outputs)):
                     decoded_outputs = data.tokenizer.decode(outputs[i], skip_special_tokens=True)
-                    decoded_inputs = data.tokenizer.decode(input_ids[i][:token_type_ids.index(1)], skip_special_tokens=True)
+                    decoded_inputs = data.tokenizer.decode(input_ids[i], skip_special_tokens=True)
                     dp ={}
                     dp["input"] = decoded_inputs
                     dp["output"] = decoded_outputs
