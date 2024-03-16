@@ -377,12 +377,10 @@ class MetaICLData(object):
                 #         inputs_ = demonstrations[dp_idx] + inputs_
                 #     if self.use_instruction:
                 #         inputs_ = inst_ids + inputs_
-
                 #     encoded = prepro_sentence_pair_single(
                 #         inputs_, outputs_, self.max_length, self.n_prefix_tokens, 
                 #         self.prefix_token_ids, self.prefix, self.use_demonstrations,
                 #         task if self.task_counts is not None else None)
-
                 #     input_ids.append(encoded[0])
                 #     attention_mask.append(encoded[1])
                 #     token_type_ids.append(encoded[2])
@@ -459,13 +457,13 @@ class MetaICLData(object):
     #         text += "\nOutput:\n"
     #         text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
 
-    #         with open('examples_step3_nl.txt', 'a') as file:
+    #         with open('examples_step3_nl_nopad.txt', 'a') as file:
     #             # Write data to the file
     #             file.write(text)
     #             file.write("\n\n")
 
 def prepro_sentence_pair_single(ids1, ids2, max_length, n_prefix_tokens=0,
-    prefix_token_ids=None, prefix=True, allow_truncation=True, task=None):
+    prefix_token_ids=None, prefix=True, allow_truncation=True, task=None):  ###prefix = false, n_prefix_tokens =0
 
     #if bos_token_id is not None:
     #    ids1 = [bos_token_id] + ids1
@@ -484,23 +482,37 @@ def prepro_sentence_pair_single(ids1, ids2, max_length, n_prefix_tokens=0,
                 ids2 = ids2[:max_length-n_prefix_tokens-len(ids1)]
         assert len(ids1)+len(ids2)+n_prefix_tokens==max_length
 
-    if n_prefix_tokens > 0:
-        if task is None:
-            _prefix_token_ids = prefix_token_ids
-        else:
-            _prefix_token_ids = prefix_token_ids[task]
+    # if n_prefix_tokens > 0:
+    #     if task is None:
+    #         _prefix_token_ids = prefix_token_ids
+    #     else:
+    #         _prefix_token_ids = prefix_token_ids[task]
 
-        if prefix:
-            ids1 = _prefix_token_ids + ids1
-        else:
-            ids1 += ids2
-            ids2 = _prefix_token_ids
+    #     if prefix:
+    #         ids1 = _prefix_token_ids + ids1
+    #     else:
+    #         ids1 += ids2
+    #         ids2 = _prefix_token_ids
 
-    n_mask = max_length-len(ids1)-len(ids2)
-    assert n_mask>=0, (max_length, len(ids1), len(ids2))
-    input_ids = ids1+ids2+[0 for _ in range(n_mask)]
-    attention_mask = [1 for _ in ids1+ids2] + [0 for _ in range(n_mask)]
-    token_type_ids = [0 for _ in ids1] + [1 for _ in ids2] + [0 for _ in range(n_mask)]
+    right_pad = True
+    no_pad = False
+    if right_pad:
+        n_mask = max_length-len(ids1)-len(ids2)
+        assert n_mask>=0, (max_length, len(ids1), len(ids2))
+        input_ids = ids1+ids2+[0 for _ in range(n_mask)]
+        attention_mask = [1 for _ in ids1+ids2] + [0 for _ in range(n_mask)]
+        token_type_ids = [0 for _ in ids1] + [1 for _ in ids2] + [0 for _ in range(n_mask)]
+    # else:
+    #     n_mask = max_length-len(ids1)-len(ids2)
+    #     assert n_mask>=0, (max_length, len(ids1), len(ids2))
+    #     input_ids = [0 for _ in range(n_mask)]+ids1+ids2
+    #     attention_mask = [0 for _ in range(n_mask)] + [1 for _ in ids1+ids2] 
+    #     token_type_ids = [0 for _ in range(n_mask)] + [0 for _ in ids1] + [1 for _ in ids2] 
+    
+    if no_pad:
+        input_ids = ids1+ids2
+        attention_mask = [1 for _ in ids1+ids2] 
+        token_type_ids = [0 for _ in ids1] + [1 for _ in ids2]
     return input_ids, attention_mask, token_type_ids
 
 

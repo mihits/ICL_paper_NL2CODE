@@ -107,6 +107,8 @@ class MetaICLModel(object):
         losses = []
         preds = []
 
+        
+
         data.tokenizer.padding_side = "left" 
         if data.tokenizer.pad_token == None:
             data.tokenizer.pad_token = data.tokenizer.eos_token
@@ -114,10 +116,12 @@ class MetaICLModel(object):
             input_ids=batch[0].to(self.device)
             attention_mask=batch[1].to(self.device)
             token_type_ids=batch[2].to(self.device)
+
+            
             
             
             with torch.no_grad():
-                outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200)
+                outputs = self.model.generate(input_ids=input_ids[:,:token_type_ids.index(1)], pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200)
                 
                 #print(outputs.shape)
                 #print("\n",len(outputs))
@@ -125,10 +129,10 @@ class MetaICLModel(object):
 
                 for i in range(len(outputs)):
                     decoded_outputs = data.tokenizer.decode(outputs[i], skip_special_tokens=True)
-                    decoded_inputs = data.tokenizer.decode(input_ids[i], skip_special_tokens=True)
+                    decoded_inputs = data.tokenizer.decode(input_ids[i][:token_type_ids.index(1)], skip_special_tokens=True)
                     dp ={}
-                    dp["output"] = decoded_outputs
                     dp["input"] = decoded_inputs
+                    dp["output"] = decoded_outputs
                     preds.append(dp)
                 
                 break
@@ -138,24 +142,7 @@ class MetaICLModel(object):
 
 
             
-    def do_inference(self, data, batch_size=1, verbose=True):
-        dataloader = data.get_dataloader(batch_size, is_training=False)
-        if verbose:
-            dataloader = tqdm(dataloader)
-        losses = []
-        for batch in dataloader:
-
-            input_ids=batch[0].to(self.device)
-            attention_mask=batch[1].to(self.device)
-            token_type_ids=batch[2].to(self.device)
-            if len(batch)==3:
-                labels=None
-            else:
-                labels=batch[3].to(self.device)
-            with torch.no_grad():
-                loss = self.run_model(input_ids, attention_mask, token_type_ids, labels=labels)
-            losses += loss.cpu().detach().numpy().tolist() 
-        return losses
+    
 
     def do_predict(self, data, batch_size=1, losses=None, verbose=False, return_nll=False):
         if losses is None:

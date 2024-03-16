@@ -168,24 +168,24 @@ def main(logger, args):
         with open(output_file_path, 'w') as json_file:
             json.dump(predictions_dict, json_file, indent=2)
         
-    exit(1)
+    
 
 
-    final_predictions = []
-    for p in np.transpose(all_predictions):
-        v, c = np.unique(p, return_counts=True)
-        final_predictions.append(v[np.argmax(c)])
-    final_f1, final_acc = metaicl_data.evaluate(final_predictions, gt, is_classification)
-    logger.info("%s over %d target tasks with majority vote: Macro-F1: %.1f, Accuracy: %.1f" % 
-        (args.task, len(all_f1s) // len(seeds), 100*final_f1, 100*final_acc))
+    # final_predictions = []
+    # for p in np.transpose(all_predictions):
+    #     v, c = np.unique(p, return_counts=True)
+    #     final_predictions.append(v[np.argmax(c)])
+    # final_f1, final_acc = metaicl_data.evaluate(final_predictions, gt, is_classification)
+    # logger.info("%s over %d target tasks with majority vote: Macro-F1: %.1f, Accuracy: %.1f" % 
+    #     (args.task, len(all_f1s) // len(seeds), 100*final_f1, 100*final_acc))
 
-    logger.info("%s over %d target tasks on average: Macro-F1: %.1f +- %.1f, Accuracy: %.1f +- %.1f" % 
-        (args.task, len(all_f1s) // len(seeds), 100*np.mean(all_f1s), 100*np.std(all_f1s), 
-        100*np.mean(all_accs), 100*np.std(all_accs)))
+    # logger.info("%s over %d target tasks on average: Macro-F1: %.1f +- %.1f, Accuracy: %.1f +- %.1f" % 
+    #     (args.task, len(all_f1s) // len(seeds), 100*np.mean(all_f1s), 100*np.std(all_f1s), 
+    #     100*np.mean(all_accs), 100*np.std(all_accs)))
 
-    if len(errors)>0:
-        logger.info("You had errors with datasets:", ",".join(errors))
-        logger.info("Please see the error messages")
+    # if len(errors)>0:
+    #     logger.info("You had errors with datasets:", ",".join(errors))
+    #     logger.info("Please see the error messages")
 
 
 
