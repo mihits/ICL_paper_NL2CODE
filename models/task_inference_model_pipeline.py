@@ -99,45 +99,60 @@ class MetaICLModel(object):
 
  
     
-
     def perform_inference(self, data, batch_size=1):
-        #batch_size =1 
-        dataloader = data.get_dataloader(batch_size, is_training=False)
-        
-        losses = []
-        preds = []
-
-        
-
-        data.tokenizer.padding_side = "left" 
-        if data.tokenizer.pad_token == None:
-            data.tokenizer.pad_token = data.tokenizer.eos_token
-        for batch in tqdm(dataloader):
-            input_ids=batch[0].to(self.device)
-            attention_mask=batch[1].to(self.device)
-            token_type_ids=batch[2].to(self.device)
+            #batch_size =1 
+            
+            num_return_seq =5
+            dataloader = data.get_dataloader(batch_size, is_training=False)
+            
+            losses = []
+            preds = []
 
             
-            
-            
-            with torch.no_grad():
-                outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200,do_sample=True,temperature = 0.7,num_return_sequences = 5,top_k = 50)
+
+            data.tokenizer.padding_side = "left" 
+            if data.tokenizer.pad_token == None:
+                data.tokenizer.pad_token = data.tokenizer.eos_token
+
+            iter =0
+            for batch in tqdm(dataloader):
+                input_ids=batch[0].to(self.device)
+                attention_mask=batch[1].to(self.device)
+                token_type_ids=batch[2].to(self.device)
+
                 
-                #print(outputs.shape)
-                #print("\n",len(outputs))
-                #print(type(outputs))
-
-                for i in range(len(outputs)):
-                    decoded_outputs = data.tokenizer.decode(outputs[i], skip_special_tokens=True)
-                    decoded_inputs = data.tokenizer.decode(input_ids[i], skip_special_tokens=True)
-                    dp ={}
-                    dp["input"] = decoded_inputs
-                    dp["output"] = decoded_outputs
-                    preds.append(dp)
                 
-                break
+                
+                with torch.no_grad():
+                    outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200,do_sample=True,temperature = 0.7,num_return_sequences = num_return_seq,top_k = 50)
+                    
+                    print(outputs.shape) #[10,2000]
+                    print(input_ids.shape)  #[2,1800]
+                    #print("\n",len(outputs))
+                    #print(type(outputs))
+                    decoded_outputs = data.tokenizer.batch_decode(outputs, skip_special_tokens=True)
+                    
+                    for idx in range(batch_size):
+                        decoded_inputs = data.tokenizer.decode(input_ids[idx], skip_special_tokens=True)
+                        dp= {}
+                        dp["input"] = decoded_inputs
+                        dp["output"]  = decoded_outputs[idx*num_return_seq:(idx+1)*num_return_seq]
+                        preds.append(dp)
+                        # for i in range(len(outputs)):
+                            
+                            
+                        #     dp ={}
+                        #     dp["input"] = decoded_inputs
+                        #     dp["output"] = decoded_outputs
 
-        return preds ###list of dicts , each having i/p & o/p
+                iter+=1
+
+                if iter == 15:
+                  break      
+                    
+                    
+
+            return preds ###list of dicts , each having i/p & o/p
 
 
 

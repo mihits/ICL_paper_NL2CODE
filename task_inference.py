@@ -164,7 +164,7 @@ def main(logger, args):
             #     (args.task, seed, 100*f1, 100*acc))
             # all_f1s.append(f1)
             # all_accs.append(acc)
-        output_file_path = "predictions_" + args.gpt.split('/')[-1] + "_" + str(args.test_batch_size) + ".json"
+        output_file_path = "predictions_" + args.gpt.split('/')[-1] + "_" + str(args.test_batch_size) + "_5.json"
         with open(output_file_path, 'w') as json_file:
             json.dump(predictions_dict, json_file, indent=2)
         

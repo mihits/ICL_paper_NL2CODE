@@ -15,7 +15,7 @@ CUDA_VISIBLE_DEVICES=0 python task_inference.py\
     --dataset $DATASET\
     --gpt $MODEL\
     --method $TEST_METHOD\
-    --test_batch_size 4\
+    --test_batch_size 2\
     --k $K\
     --embedding_dir embeddings/\
     --use_demonstrations\
