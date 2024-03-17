@@ -136,57 +136,28 @@ def main(logger, args):
                 options = curr_dev_data[0]["options"]
                 assert np.all([d["options"]==options for d in curr_dev_data])
 
-        
+
             
             demonstrations = saved_demos[test_task]
 
-            ### final inference after selecting demonstrations (done separately for every task,inside for loop)
-            # f1, acc, pred, gt, nll, gt_label = run(test_task, metaicl_data, 
-            #             metaicl_model, demonstrations, curr_dev_data, 
-            #             is_classification) 
-            preds = run(test_task, metaicl_data, 
-                        metaicl_model, demonstrations, curr_dev_data, 
+            if args.use_random_demo :
+                metaicl_data.use_random_demo = True
+                preds = run(test_task, metaicl_data, 
+                        metaicl_model, curr_dev_data, curr_dev_data, 
                         is_classification)
+
+            else:
+                preds = run(test_task, metaicl_data, 
+                            metaicl_model, demonstrations, curr_dev_data, 
+                            is_classification)
             
             predictions_dict[test_task] = preds
 
 
-            # if save_path is not None and args.split=='train':  ###arg.split = test in prior.sh
-            #     if not os.path.exists(save_path):
-            #         os.makedirs(save_path)
-            #     np.save(os.path.join(save_path, f'{args.split}-pred.npy'), pred)
-            #     np.save(os.path.join(save_path, f'{args.split}-gt.npy'), gt_label)
-            #     np.save(os.path.join(save_path, f'{args.split}-nll.npy'), nll)
-            #     np.save(os.path.join(save_path, f'{args.split}-acc.npy'), acc)
-
-            # all_predictions.append(pred)
-            # logger.info("%s task (seed=%s): Macro-F1: %.1f, Accuracy: %.1f" % 
-            #     (args.task, seed, 100*f1, 100*acc))
-            # all_f1s.append(f1)
-            # all_accs.append(acc)
         output_file_path = "predictions_" + args.gpt.split('/')[-1] + "_" + str(args.test_batch_size) + "_5.json"
         with open(output_file_path, 'w') as json_file:
             json.dump(predictions_dict, json_file, indent=2)
         
-    
-
-
-    # final_predictions = []
-    # for p in np.transpose(all_predictions):
-    #     v, c = np.unique(p, return_counts=True)
-    #     final_predictions.append(v[np.argmax(c)])
-    # final_f1, final_acc = metaicl_data.evaluate(final_predictions, gt, is_classification)
-    # logger.info("%s over %d target tasks with majority vote: Macro-F1: %.1f, Accuracy: %.1f" % 
-    #     (args.task, len(all_f1s) // len(seeds), 100*final_f1, 100*final_acc))
-
-    # logger.info("%s over %d target tasks on average: Macro-F1: %.1f +- %.1f, Accuracy: %.1f +- %.1f" % 
-    #     (args.task, len(all_f1s) // len(seeds), 100*np.mean(all_f1s), 100*np.std(all_f1s), 
-    #     100*np.mean(all_accs), 100*np.std(all_accs)))
-
-    # if len(errors)>0:
-    #     logger.info("You had errors with datasets:", ",".join(errors))
-    #     logger.info("Please see the error messages")
-
 
 
 def run(task, metaicl_data, metaicl_model, train_data, dev_data,
@@ -202,8 +173,9 @@ def run(task, metaicl_data, metaicl_model, train_data, dev_data,
     else:
       
         metaicl_data.tensorize(train_data, dev_data)
-        metaicl_data.print_tensorized_example()
-
+        metaicl_data.print_tensorized_example(print_all = True)
+        
+        exit(1)
     
         preds = metaicl_model.perform_inference(metaicl_data, args.test_batch_size)
 
@@ -226,6 +198,7 @@ if __name__=='__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("--use_demonstrations", default=False, action="store_true")
+    parser.add_argument("--use_random_demo", default=False, action="store_true")
     parser.add_argument("--use_soft_prefix", default=False, action="store_true")
     parser.add_argument("--use_soft_postfix", default=False, action="store_true")
     parser.add_argument("--n_prefix_tokens", type=int, default=10)

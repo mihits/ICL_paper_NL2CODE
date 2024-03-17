@@ -13,6 +13,7 @@ import numpy as np
 import pickle as pkl
 import math
 import torch
+import random
 
 from collections import defaultdict
 from functools import partial
@@ -28,7 +29,7 @@ class MetaICLData(object):
                 max_length=1024, max_length_per_example=256, do_tensorize=False, 
                 tensorize_dir=None, n_process=None, n_gpu=None, local_rank=-1,
                 add_newlines=False, n_prefix_tokens=0, prefix=True, 
-                task_counts=None, prefix_token_ids=None, task=None):
+                task_counts=None, prefix_token_ids=None, task=None, use_random_demo = False):
 
         self.logger = logger
         self.method = method
@@ -43,6 +44,7 @@ class MetaICLData(object):
         self.task_counts = task_counts
         self.prefix_token_ids = prefix_token_ids
         self.task = task
+        self.use_random_demo = use_random_demo
 
         self.do_tensorize = do_tensorize
         self.tensorize_dir = tensorize_dir
@@ -315,8 +317,47 @@ class MetaICLData(object):
 
         train_data, test_data = [], []
 
-        ### _train_data is a list of dicts. each dict - represents a demo
-        if self.use_demonstrations:   
+        ###_train_data = list of dicts (all train data from which 4 random demos to be selected)
+        
+        if self.use_random_demo:
+            if type(_train_data[0])==dict:
+                # for _ in range(len(_test_data)):
+                #     demo = []
+                #     for dp in _train_data:
+                #         assert type(dp)==dict, ("Each example should be a dictionary", dp)
+                #         assert "input" in dp and "output" in dp, ("Training example should contain input and output", dp)
+                #         demo.append(dp.copy())
+                #     train_data.append(demo)
+                # ### train_data contains n copies of _train_data i.e list of 4 demos(n= len of testdata);dimension = n*4
+
+                for _ in range(len(_test_data)):
+                    demo = []
+                    
+                    #select 4 random demos from _train_data
+                    demo = random.sample(_train_data, self.k)
+                    train_data.append(demo)
+                ### train_data contains n lists. (n= len of testdata);Each list contains a list of 4 demos.dimension = n*4
+
+            else:
+                print(_train_data)
+                exit(1)
+
+            demonstrations = []
+            tasks = []
+            for demo in train_data:
+                assert len(demo)==self.k  ### demo is list of 4 demonstrations
+                process_demo = []
+                for i, dp in enumerate(demo):
+                    input_, output_ = self._prepro_each_datapoint(
+                        dp, is_first=i==0, for_demonstrations=True)
+                    process_demo += input_ + output_
+                demonstrations.append(process_demo)
+                tasks.append(dp["task"])
+            
+            ### demonstrations -> length = n. each contains same tokenized 4 demos(combined together)
+
+        ### _train_data is a list of 4 dicts. each dict - represents a demo
+        elif self.use_demonstrations:   
             if type(_train_data[0])==dict:
                 for _ in range(len(_test_data)):
                     demo = []
@@ -417,51 +458,51 @@ class MetaICLData(object):
 
     
 
-    def print_tensorized_example(self, return_string=False):
+    def print_tensorized_example(self, return_string=False, print_all = False):
         assert self.tensorized_inputs is not None
 
-        idx = 0
-        text = "Checking the first example..."
-        input_ids = self.tensorized_inputs["input_ids"][idx]
-        token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
-        if type(input_ids)!=list:
-            input_ids = input_ids.numpy().tolist()
-        if type(token_type_ids)!=list:
-            token_type_ids = token_type_ids.numpy().tolist()
+        if not print_all:
+            idx = 0
+            text = "Checking the first example..."
+            input_ids = self.tensorized_inputs["input_ids"][idx]
+            token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
+            if type(input_ids)!=list:
+                input_ids = input_ids.numpy().tolist()
+            if type(token_type_ids)!=list:
+                token_type_ids = token_type_ids.numpy().tolist()
 
-        text += "\nInput:\n"
-        text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
-        text += "\nOutput:\n"
-        text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
+            text += "\nInput:\n"
+            text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
+            text += "\nOutput:\n"
+            text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
 
-        if return_string:
-            return text
+            if return_string:
+                return text
 
-        if self.local_rank<=0:
-          self.logger.info(text)
+            if self.local_rank<=0:
+                self.logger.info(text)
+        else:
+            for idx in range(10000):
+                text = ""
+                ###text = "Checking the first example..."
+                input_ids = self.tensorized_inputs["input_ids"][idx]
+                token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
+                if type(input_ids)!=list:
+                    input_ids = input_ids.numpy().tolist()
+                if type(token_type_ids)!=list:
+                    token_type_ids = token_type_ids.numpy().tolist()
 
-    # def print_tensorized_example(self, return_string=False):
-    #     assert self.tensorized_inputs is not None
+                text += "\nInput:\n"
+                text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
+                text += "\nOutput:\n"
+                text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
 
-    #     for idx in range(10000):
-    #         text = ""
-    #         ###text = "Checking the first example..."
-    #         input_ids = self.tensorized_inputs["input_ids"][idx]
-    #         token_type_ids = self.tensorized_inputs["token_type_ids"][idx]
-    #         if type(input_ids)!=list:
-    #             input_ids = input_ids.numpy().tolist()
-    #         if type(token_type_ids)!=list:
-    #             token_type_ids = token_type_ids.numpy().tolist()
+                with open('examples_step3_random_demo.txt', 'a') as file:
+                    # Write data to the file
+                    file.write(text)
+                    file.write("\n\n")
 
-    #         text += "\nInput:\n"
-    #         text += self.tokenizer.decode(input_ids[:token_type_ids.index(1)])
-    #         text += "\nOutput:\n"
-    #         text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
-
-    #         with open('examples_step3_nl_nopad.txt', 'a') as file:
-    #             # Write data to the file
-    #             file.write(text)
-    #             file.write("\n\n")
+    
 
 def prepro_sentence_pair_single(pad_tk,ids1, ids2, max_length, n_prefix_tokens=0,
     prefix_token_ids=None, prefix=True, allow_truncation=True, task=None):  ###prefix = false, n_prefix_tokens =0
