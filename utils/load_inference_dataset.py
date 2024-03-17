@@ -197,11 +197,11 @@ class MetaICLData(object):
             
             dp["input"] = dp["input"] + "\n"
             if method=="direct":
-                if not is_first:
-                    if no_input:
-                        dp["input"] = "\n\n" + dp["input"]
-                    else:
-                        dp["input"] = "\n\n\n" + dp["input"]
+                
+                if no_input:
+                    dp["input"] = "\n\n" + dp["input"]
+                else:
+                    dp["input"] = "\n\n\n" + dp["input"]
                 if not no_label:
                     dp["output"] = "\n" + dp["output"]
                     if "options" in dp:

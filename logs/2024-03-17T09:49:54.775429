@@ -1,0 +1,7 @@
+03/17/2024 09:49:54 - INFO - __main__ - Namespace(use_demonstrations=True, use_random_demo=True, use_soft_prefix=False, use_soft_postfix=False, n_prefix_tokens=10, max_length=1800, prior=['easiest'], difficulty='concept_calibrated', reorder=False, log_dir='logs', load_dir=None, concept_dir='concept_likelihood/gpt2/code_dataset-train-100/humaneval,mbbp-direct-prefix=10-lr=1e-2-1000', prefix_embed_file='checkpoints/gpt2/code_dataset-train/prefix={10}-{direct}-lr={1e-2}-initByVocab/soft_embeddings-1000.pt', task=None, dataset='humaneval,mbbp', data_dir='data/', k=4, seed='100', test_batch_size=2, global_step=None, use_random_english_words=False, use_random_label=False, split='test', method='direct', gpt='bigcode/santacoder', api=None, test_size=1000, train_size=100, embedding_dir='embeddings/', embedding_model='all-mpnet-base-v2', similarity_temperature=0.1, concept_temperature=50.0, use_instruction=False)
+03/17/2024 09:49:54 - INFO - __main__ - Setting up for local_rank=-1, world_size=1
+03/17/2024 09:50:55 - INFO - __main__ - batch_size=2	max_length=1800	max_length_per_example=1800
+03/17/2024 09:50:57 - INFO - __main__ - [Dev] humaneval	164
+03/17/2024 09:50:57 - INFO - __main__ - [Dev] mbbp	257
+03/17/2024 09:50:57 - INFO - __main__ - direct on None ( 2 dev)
+03/17/2024 09:51:03 - INFO - numexpr.utils - NumExpr defaulting to 2 threads.
