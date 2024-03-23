@@ -191,11 +191,13 @@ class MetaICLData(object):
         else:
             raise NotImplementedError()
 
-        if self.add_newlines:
+        if self.add_newlines:  
             no_label = np.all([option=="" for option in dp["options"]])
             no_input = dp["input"]==""
             
             dp["input"] = dp["input"] + "\n"
+            dp["input"] = "Input Instruction:\n" + dp["input"]
+            dp["output"] = "Output Code:\n" + dp["output"]
             if method=="direct":
                 
                 if no_input:
@@ -230,9 +232,10 @@ class MetaICLData(object):
             elif method=="channel":
                 dp["input"] = " " + dp["input"]
 
-        input_tokens = self.tokenizer(dp["input"])["input_ids"]
+        
 
         if is_training or for_demonstrations:
+            input_tokens = self.tokenizer(dp["input"])["input_ids"]
             output_tokens = self.tokenizer(dp["output"])["input_ids"]
 
             if "task" in dp:
@@ -279,8 +282,11 @@ class MetaICLData(object):
 
             ###dp is one of the demos from saved_demos.json
             ###output_tokens = self.tokenizer(dp["output"])["input_ids"]
-
+            
             output_tokens = self.tokenizer(" ")["input_ids"]  #since actual output doesnt matter for final inference
+            ##since output token is null, append Output Code to end of input string
+            dp["input"] += "Output Code:\n"
+            input_tokens = self.tokenizer(dp["input"])["input_ids"]
 
             if len(input_tokens)>=self.max_length_per_example - 2:
                 input_tokens = input_tokens[:self.max_length_per_example - 2]
@@ -321,15 +327,7 @@ class MetaICLData(object):
         
         if self.use_random_demo:
             if type(_train_data[0])==dict:
-                # for _ in range(len(_test_data)):
-                #     demo = []
-                #     for dp in _train_data:
-                #         assert type(dp)==dict, ("Each example should be a dictionary", dp)
-                #         assert "input" in dp and "output" in dp, ("Training example should contain input and output", dp)
-                #         demo.append(dp.copy())
-                #     train_data.append(demo)
-                # ### train_data contains n copies of _train_data i.e list of 4 demos(n= len of testdata);dimension = n*4
-
+                
                 for _ in range(len(_test_data)):
                     demo = []
                     
@@ -497,7 +495,7 @@ class MetaICLData(object):
                 text += "\nOutput:\n"
                 text += self.tokenizer.decode([_id for _id, _type_id in zip(input_ids, token_type_ids) if _type_id==1])
 
-                with open('examples_step3_random_demo.txt', 'a') as file:
+                with open('examples_step3_icl_formatted.txt', 'a') as file:
                     # Write data to the file
                     file.write(text)
                     file.write("\n\n")
@@ -538,8 +536,6 @@ def prepro_sentence_pair_single(pad_tk,ids1, ids2, max_length, n_prefix_tokens=0
 
     right_pad = False
     no_pad = False
-
-    
 
     if right_pad:
         n_mask = max_length-len(ids1)-len(ids2)
