@@ -173,8 +173,7 @@ def run(task, metaicl_data, metaicl_model, train_data, dev_data,
     else:
       
         metaicl_data.tensorize(train_data, dev_data)
-        metaicl_data.print_tensorized_example(print_all = True)
-        exit(1)
+        metaicl_data.print_tensorized_example(print_all = False)
         
     
         preds = metaicl_model.perform_inference(metaicl_data, args.test_batch_size)

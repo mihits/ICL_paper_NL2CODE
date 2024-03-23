@@ -125,9 +125,9 @@ class MetaICLModel(object):
                 
                 with torch.no_grad():
                     outputs = self.model.generate(input_ids=input_ids, pad_token_id=data.tokenizer.eos_token_id, attention_mask=attention_mask,max_new_tokens = 200,do_sample=True,temperature = 0.7,num_return_sequences = num_return_seq,top_k = 50)
-                    T
-                    print(outputs.shape) #[10,2000]
-                    print(input_ids.shape)  #[2,1800]
+                    
+                    # print(outputs.shape) #[10,2000]
+                    # print(input_ids.shape)  #[2,1800]
                     #print("\n",len(outputs))
                     #print(type(outputs))
                     decoded_outputs = data.tokenizer.batch_decode(outputs, skip_special_tokens=True)
@@ -147,7 +147,7 @@ class MetaICLModel(object):
 
                 iter+=1
 
-                if iter == 15:
+                if iter == 5:
                   break      
                     
                     
