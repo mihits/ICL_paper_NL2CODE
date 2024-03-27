@@ -24,12 +24,14 @@ import time
 import numpy as np
 from datetime import datetime
 from pathlib import Path
+from transformers import AutoTokenizer, AutoModel
 
 from tqdm import tqdm
 from collections import Counter, defaultdict
 
 from utils.load_inference_dataset import MetaICLData
 from models.task_inference_model_pipeline import MetaICLModel
+
 ##from gpt3 import GPT3Model
 
 from utils.load_inference_dataset import load_data
@@ -150,6 +152,11 @@ def main(logger, args):
                     
             elif args.use_similar_demo:
                 metaicl_data.use_similar_demo = True
+                metaicl_data.sim_model = AutoModel.from_pretrained("microsoft/codebert-base")
+                metaicl_data.sim_tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base") 
+                metaicl_data.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+                metaicl_data.sim_model.to(metaicl_data.device)
+                
                 preds = run(test_task, metaicl_data, 
                         metaicl_model, curr_dev_data, curr_dev_data, 
                         is_classification)

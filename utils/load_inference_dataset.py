@@ -48,6 +48,10 @@ class MetaICLData(object):
         self.use_random_demo = use_random_demo
         self.use_similar_demo = use_similar_demo
 
+        self.sim_model = None
+        self.sim_tokenizer = None
+        self.device = None
+
         self.do_tensorize = do_tensorize
         self.tensorize_dir = tensorize_dir
         self.n_process = n_process
@@ -300,22 +304,43 @@ class MetaICLData(object):
             else:
                 raise NotImplementedError()
 
+    def retrieve_embedding(self, input):
+        ##input must be a string 
+
+        ip_tokens_ids = self.sim_tokenizer(input)['input_ids']
+        ip_tokens_ids = torch.tensor(ip_tokens_ids).to(self.device)
+        model_op=self.sim_model(torch.tensor(ip_tokens_ids)[None,:])
+        ip_embedding = model_op['last_hidden_state'][:,0,:]  ###cls token embedding- reconfirm?
+        return ip_embedding
     
-    # def retrive_most_sim(self, dp,_train_data_embed ):
+    def retrieve_most_sim(self, dp,_train_data_embed ):
 
-    #     ip_tokens=tokenizer.tokenize(dp["input"])
-    #     ip_tokens_ids=tokenizer.convert_tokens_to_ids(ip_tokens)
-    #     model_op=sim_model(torch.tensor(ip_tokens_ids)[None,:])
-    #     ip_embedding = model_op['last_hidden_state'][:,0,:]
+        # ip_tokens=self.sim_tokenizer.tokenize(dp["input"])
+        # ip_tokens_ids=self.sim_tokenizer.convert_tokens_to_ids(ip_tokens)
+        # model_op=self.sim_model(torch.tensor(ip_tokens_ids)[None,:])
+        # ip_embedding = model_op['last_hidden_state'][:,0,:]
+        
+        ip_embedding = self.retrieve_embedding(dp["input"])
 
-    #     sim = CosineSimilarity(dim=-1)
-    #     cosine = sim(ip_embedding, _train_data_embed )
-    #     _, indices = cosine.topk(self.k)
-    #     return indices
+        sim = CosineSimilarity(dim=-1)
+        cosine = sim(ip_embedding, _train_data_embed )
+        _, indices = cosine.topk(self.k)
+        return indices
 
-    # def embed_all(self, _train_data):
-    #     ##retrive list of input keys' values
-    #     pass
+    def embed_all(self, _train_data):
+        ##retrive list of input keys' values
+
+        _train_data_inputs =[]
+        for _,dp in enumerate(_train_data):
+            _train_data_inputs.append(dp["input"])
+        
+        _train_data_embed = []
+        for _,dp in enumerate(_train_data_inputs):
+            _train_data_embed.append(self.retrieve_embedding(dp))
+        
+        
+        return torch.cat(_train_data_embed)
+        
 
 
     def tensorize(self, _train_data, _test_data, instruction=None, options=None):
@@ -387,18 +412,20 @@ class MetaICLData(object):
 
 
                 #obtain embeddings (with similarity model) all of _train_data[this is list of dicts]
+                _train_data_embed = self.embed_all(_train_data)
 
                 for dp_idx, dp in enumerate(test_data):
-                    pass
+
+                    
                     #select 4 most similar demos from _train_data
 
                     #for each dp, calc simlarity with embedding of _train_data {make function?}
                     #obtain indices of top_k most similar from above function
                     #sample from _train_data (list of dicts) using these indices
+                    topk_indices = self.retrieve_most_sim(dp,_train_data_embed)
+                    topk_demos = [_train_data[i] for i in topk_indices]
+                    train_data.append(topk_demos)
                     
-                    
-
-
                 ### train_data contains n lists. (n= len of testdata);Each list contains a list of 4 demos.dimension = n*4
 
             else:
