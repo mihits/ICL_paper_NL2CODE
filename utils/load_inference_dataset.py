@@ -18,8 +18,8 @@ import random
 from collections import defaultdict
 from functools import partial
 from multiprocessing import Pool
-from transformers import AutoTokenizer
-
+from transformers import AutoTokenizer, AutoModel
+from torch.nn import CosineSimilarity
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 
 class MetaICLData(object):
@@ -29,7 +29,7 @@ class MetaICLData(object):
                 max_length=1024, max_length_per_example=256, do_tensorize=False, 
                 tensorize_dir=None, n_process=None, n_gpu=None, local_rank=-1,
                 add_newlines=False, n_prefix_tokens=0, prefix=True, 
-                task_counts=None, prefix_token_ids=None, task=None, use_random_demo = False):
+                task_counts=None, prefix_token_ids=None, task=None, use_random_demo = False,use_similar_demo = False):
 
         self.logger = logger
         self.method = method
@@ -44,7 +44,9 @@ class MetaICLData(object):
         self.task_counts = task_counts
         self.prefix_token_ids = prefix_token_ids
         self.task = task
+
         self.use_random_demo = use_random_demo
+        self.use_similar_demo = use_similar_demo
 
         self.do_tensorize = do_tensorize
         self.tensorize_dir = tensorize_dir
@@ -299,7 +301,21 @@ class MetaICLData(object):
                 raise NotImplementedError()
 
     
+    # def retrive_most_sim(self, dp,_train_data_embed ):
 
+    #     ip_tokens=tokenizer.tokenize(dp["input"])
+    #     ip_tokens_ids=tokenizer.convert_tokens_to_ids(ip_tokens)
+    #     model_op=sim_model(torch.tensor(ip_tokens_ids)[None,:])
+    #     ip_embedding = model_op['last_hidden_state'][:,0,:]
+
+    #     sim = CosineSimilarity(dim=-1)
+    #     cosine = sim(ip_embedding, _train_data_embed )
+    #     _, indices = cosine.topk(self.k)
+    #     return indices
+
+    # def embed_all(self, _train_data):
+    #     ##retrive list of input keys' values
+    #     pass
 
 
     def tensorize(self, _train_data, _test_data, instruction=None, options=None):
@@ -325,6 +341,10 @@ class MetaICLData(object):
 
         ###_train_data = list of dicts (all train data from which 4 random demos to be selected)
         
+        if self.use_random_demo and self.use_similar_demo:
+            print("Both random demo and similar demo selection enabled. Please select only one")
+            exit(1)
+
         if self.use_random_demo:
             if type(_train_data[0])==dict:
                 
@@ -353,6 +373,52 @@ class MetaICLData(object):
                 tasks.append(dp["task"])
             
             ### demonstrations -> length = n. each contains same tokenized 4 demos(combined together)
+
+
+        elif self.use_similar_demo:
+            if type(_train_data[0])==dict:
+                
+                for _ in range(len(_test_data)):
+                    demo = []
+                    
+                    #select 4 random demos from _train_data
+                    demo = random.sample(_train_data, self.k)
+                    train_data.append(demo)
+
+
+                #obtain embeddings (with similarity model) all of _train_data[this is list of dicts]
+
+                for dp_idx, dp in enumerate(test_data):
+                    pass
+                    #select 4 most similar demos from _train_data
+
+                    #for each dp, calc simlarity with embedding of _train_data {make function?}
+                    #obtain indices of top_k most similar from above function
+                    #sample from _train_data (list of dicts) using these indices
+                    
+                    
+
+
+                ### train_data contains n lists. (n= len of testdata);Each list contains a list of 4 demos.dimension = n*4
+
+            else:
+                print(_train_data)
+                exit(1)
+
+            demonstrations = []
+            tasks = []
+            for demo in train_data:
+                assert len(demo)==self.k  ### demo is list of 4 demonstrations
+                process_demo = []
+                for i, dp in enumerate(demo):
+                    input_, output_ = self._prepro_each_datapoint(
+                        dp, is_first=i==0, for_demonstrations=True)
+                    process_demo += input_ + output_
+                demonstrations.append(process_demo)
+                tasks.append(dp["task"])
+            
+            ### demonstrations -> length = n. each contains same tokenized 4 demos(combined together)
+
 
         ### _train_data is a list of 4 dicts. each dict - represents a demo
         elif self.use_demonstrations:   

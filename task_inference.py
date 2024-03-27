@@ -145,7 +145,15 @@ def main(logger, args):
                 preds = run(test_task, metaicl_data, 
                         metaicl_model, curr_dev_data, curr_dev_data, 
                         is_classification)
+                ### above code wrong cuz demos being selected from curr_dev_data instad of train_data
 
+                    
+            elif args.use_similar_demo:
+                metaicl_data.use_similar_demo = True
+                preds = run(test_task, metaicl_data, 
+                        metaicl_model, curr_dev_data, curr_dev_data, 
+                        is_classification)
+                
             else:
                 preds = run(test_task, metaicl_data, 
                             metaicl_model, demonstrations, curr_dev_data, 
@@ -198,6 +206,7 @@ if __name__=='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--use_demonstrations", default=False, action="store_true")
     parser.add_argument("--use_random_demo", default=False, action="store_true")
+    parser.add_argument("--use_similar_demo", default=False, action="store_true")
     parser.add_argument("--use_soft_prefix", default=False, action="store_true")
     parser.add_argument("--use_soft_postfix", default=False, action="store_true")
     parser.add_argument("--n_prefix_tokens", type=int, default=10)

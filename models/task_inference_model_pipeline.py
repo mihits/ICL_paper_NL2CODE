@@ -128,19 +128,17 @@ class MetaICLModel(object):
                     
                     # print(outputs.shape) #[10,2000]
                     # print(input_ids.shape)  #[2,1800]
-                    #print("\n",len(outputs))
-                    #print(type(outputs))
+                  
                     decoded_outputs = data.tokenizer.batch_decode(outputs, skip_special_tokens=True)
-                    
-                    for idx in range(batch_size):
+
+                    for idx in range(len(input_ids)):  ##len(input_ids) = batch_size(for last batch also)
+                    #for idx in range(batch_size):  ### what if last batch length not equal to batch_size?
                         decoded_inputs = data.tokenizer.decode(input_ids[idx], skip_special_tokens=True)
                         dp= {}
                         dp["input"] = decoded_inputs
                         dp["output"]  = decoded_outputs[idx*num_return_seq:(idx+1)*num_return_seq]
                         preds.append(dp)
-                        # for i in range(len(outputs)):
-                            
-                            
+                        # for i in range(len(outputs)):                            
                         #     dp ={}
                         #     dp["input"] = decoded_inputs
                         #     dp["output"] = decoded_outputs

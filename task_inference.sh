@@ -29,6 +29,7 @@ CUDA_VISIBLE_DEVICES=0 python task_inference.py\
     --prior easiest\
     --seed 100\
     --max_length 1800\  ##size of model context window - max_new_tokens generated
+    --use_similar_demo\
      #--use_random_demo\
        # --reorder\
     # --prior most_similar\
